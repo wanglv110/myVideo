@@ -25,4 +25,9 @@ public class VideoController {
     }
 
 
+    @RequestMapping("/templates")
+    public String index(){
+//        return "welcome.html";
+        return "/welcome";
+    }
 }
