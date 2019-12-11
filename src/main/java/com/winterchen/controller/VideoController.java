@@ -1,6 +1,7 @@
 package com.winterchen.controller;
 
 import com.winterchen.model.Lable;
+import com.winterchen.model.LableExt;
 import com.winterchen.service.user.LableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,9 @@ public class VideoController {
 
     @ResponseBody
     @GetMapping("/getLables")
-    public List<Lable> getLables(){
-        return lableService.getLables();
+    public List<LableExt> getLables(){
+        List<LableExt> lables = lableService.getLables();
+        return lables;
     }
 
 

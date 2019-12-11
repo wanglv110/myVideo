@@ -6,22 +6,25 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    lable_id,lable_name,update_time
+    lable_name,update_time
   </sql>
 
-  <resultMap id="BaseResultMap" type="com.winterchen.model.Lable">
+  <resultMap id="BaseResultMap" type="com.winterchen.model.LableExt">
     <result property="lableId" column="lable_id" />
     <result property="lableName" column="lable_name" />
     <result property="updateTime" column="update_time" />
   </resultMap>
 
 
-  <select id="getLables" resultType="com.winterchen.model.Lable" resultMap="BaseResultMap">
-      SELECT
-        <include refid="BASE_COLUMN"/>
+  <select id="getLables" resultMap="BaseResultMap">
+      SELECT lable_id, lable_name, update_time
       FROM
-        <include refid="BASE_TABLE"/>
+        lable
   </select>
 
+  <select id="addLable" parameterType="com.winterchen.model.LableExt">
+      INSERT INTO lable(lable_id, lable_name)
+      values(#{lableId}, #{lableName})
+  </select>
 
 </mapper>
