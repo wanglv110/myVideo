@@ -4,18 +4,18 @@
 
 
   <resultMap id="BaseResultMap" type="com.winterchen.model.VideoExt">
-    <result property="videoId" column="lable_id" />
-    <result property="name" column="lable_name" />
-    <result property="size" column="update_time" />
-    <result property="videoType" column="update_time" />
-    <result property="logo" column="update_time" />
-    <result property="screenshot" column="update_time" />
-    <result property="path" column="update_time" />
-    <result property="definition" column="update_time" />
-    <result property="designation" column="update_time" />
-    <result property="describe" column="update_time" />
-    <result property="uploadTime" column="update_time" />
-    <result property="lssueTime" column="update_time" />
+    <result property="videoId" column="video_id" />
+    <result property="name" column="name" />
+    <result property="size" column="size" />
+    <result property="videoType" column="video_type" />
+    <result property="logo" column="logo" />
+    <result property="screenshot" column="screenshot" />
+    <result property="path" column="path" />
+    <result property="definition" column="definition" />
+    <result property="designation" column="designation" />
+    <result property="describe" column="describe" />
+    <result property="uploadTime" column="upload_time" />
+    <result property="lssueTime" column="lssue_time" />
     <result property="updateTime" column="update_time" />
   </resultMap>
 
@@ -26,9 +26,37 @@
         video
   </select>
 
-  <select id="getVideoByPerformer" parameterType="com.winterchen.model.LableExt" resultMap="BaseResultMap">
-      SELECT * FROM video v
-      left join performer p on
+  <select id="getVideoByPerformer" parameterType="com.winterchen.model.VideoExt" resultMap="BaseResultMap">
+      SELECT
+        v.video_id,
+        v.name,
+        v.size,
+        v.designation,
+        v.path
+      FROM
+        performer_relation pr
+        LEFT JOIN performer p
+          ON pr.performer_id = p.performer_id
+        LEFT JOIN video v
+          ON pr.video_id = v.video_id
+      WHERE p.performer_name LIKE
+      CONCAT("%", #{performerName} , "%")
   </select>
 
+  <select id="getVideoByLable" parameterType="com.winterchen.model.VideoExt" resultMap="BaseResultMap">
+    SELECT
+      v.video_id,
+      v.name,
+      v.size,
+      v.designation,
+      v.path
+    FROM
+      lable_relation lr
+      LEFT JOIN lable l
+        ON lr.lable_id = l.lable_id
+      LEFT JOIN video v
+        ON lr.video_id = v.video_id
+    WHERE l.lable_name LIKE
+    CONCAT("%", #{lableName} , "%")
+  </select>
 </mapper>
