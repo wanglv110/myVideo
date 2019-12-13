@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="myVideo.performer" >
+
+
+  <resultMap id="BaseResultMap" type="com.winterchen.model.LableExt">
+    <result property="performerId" column="performer_id" />
+    <result property="performerName" column="performer_name" />
+    <result property="performerNationality" column="performer_nationality" />
+    <result property="updateTime" column="update_time" />
+  </resultMap>
+
+
+  <select id="getPerformers" parameterType="com.winterchen.model.PerformerExt" resultMap="BaseResultMap">
+      SELECT *
+      FROM
+        performer
+  </select>
+
+  <select id="addPerformer" parameterType="com.winterchen.model.PerformerExt">
+      INSERT INTO lable(performer_id, performer_name, performer_nationality)
+      values(#{performerId}, #{performerName}, #{performerNationality})
+  </select>
+
+</mapper>

@@ -1,11 +1,13 @@
 package com.winterchen.model;
 
+import com.winterchen.commons.BaseBean;
+
 import java.util.Date;
 
-public class Performer {
+public class Performer extends BaseBean {
     private String performerId;
     private String performerName;
-    private String pperformerNationality;
+    private String performerNationality;
     private Date updateTime;
 
     public String getPerformerId() {
@@ -24,12 +26,12 @@ public class Performer {
         this.performerName = performerName;
     }
 
-    public String getPperformerNationality() {
-        return pperformerNationality;
+    public String getPerformerNationality() {
+        return performerNationality;
     }
 
-    public void setPperformerNationality(String pperformerNationality) {
-        this.pperformerNationality = pperformerNationality;
+    public void setPerformerNationality(String performerNationality) {
+        this.performerNationality = performerNationality;
     }
 
     public Date getUpdateTime() {

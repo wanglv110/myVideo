@@ -13,12 +13,12 @@ public interface LableService {
      * 查询所有标签
      * @return
      */
-    List<LableExt> getLables();
+    List<LableExt> getLables(LableExt lableExt);
 
     /**
      * 添加标签
      * @param lableExt
      */
-    void addLable(LableExt lableExt);
+    int addLable(LableExt lableExt);
 
 }

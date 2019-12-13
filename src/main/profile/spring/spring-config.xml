@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+    <!-- 把此包下的所有标示注解的类注入 -->
+    <context:component-scan base-package="com.winterchen"></context:component-scan>
+
+    <!-- 声明注解方式的handler -->
+    <!--<bean-->
+            <!--class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
+    <!--
+    <context:property-placeholder location="classpath:/profile/jdbc.properties" />
+
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+     -->
+    <!-- 通过proxool来配置数据源-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"
+                  value="org.logicalcobwebs.proxool.ProxoolDriver"/>
+        <property name="url"
+                  value="proxool.dbpool"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 加载sql文件的路径，支持通配符 -->
+        <property name="mapperLocations"
+                  value="classpath:com/winterchen/model/mapper/*.xml"/>
+        <!-- 映射bean类的包路径，不支持通配符，但是会自动搜寻所有子包，写一个上层的包路径即可 -->
+        <property name="typeAliasesPackage" value="com.allook"/>
+        <!-- 分页插件，offsetAsPageNum为true时，RowBounds分页参数为pagenum和step，默认为false时，分页参数同limit参数；
+        rowBoundsWithCount为true时，分页查询会查询count，默认为false时，不会查询count-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                            offsetAsPageNum=true
+                            rowBoundsWithCount=false
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 通过proxool来配置数据源-->
+    <bean id="dataSource1"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"
+                  value="org.logicalcobwebs.proxool.ProxoolDriver"/>
+        <property name="url"
+                  value="proxool.dbpool1"/>
+    </bean>
+
+    <bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource1"/>
+        <!-- 加载sql文件的路径，支持通配符 -->
+        <property name="mapperLocations"
+                  value="classpath:com/winterchen/model/mapper/*.xml"/>
+        <!-- 映射bean类的包路径，不支持通配符，但是会自动搜寻所有子包，写一个上层的包路径即可 -->
+        <property name="typeAliasesPackage" value="com.allook"/>
+        <!-- 分页插件，offsetAsPageNum为true时，RowBounds分页参数为pagenum和step，默认为false时，分页参数同limit参数；
+        rowBoundsWithCount为true时，分页查询会查询count，默认为false时，不会查询count-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                            offsetAsPageNum=true
+                            rowBoundsWithCount=false
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!--
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+       <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+     -->
+    <bean id="sqlSession" class="com.winterchen.commons.CustomSqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+        <property name="targetSqlSessionFactorys">
+            <map>
+                <entry value-ref="sqlSessionFactory" key="mysql"/>
+                <entry value-ref="sqlSessionFactory1" key="mysql1"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 写操作事务 -->
+    <bean id="transactionManager1"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource1"/>
+    </bean>
+
+    <!-- 事务注解起用 -->
+    <tx:annotation-driven transaction-manager="transactionManager1"/>
+    <aop:aspectj-autoproxy/>
+
+    <!-- 读操作事务 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 事务注解起用 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <aop:aspectj-autoproxy/>
+
+</beans>

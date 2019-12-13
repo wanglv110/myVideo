@@ -1,8 +1,10 @@
 package com.winterchen.model;
 
+import com.winterchen.commons.BaseBean;
+
 import java.util.Date;
 
-public class Video {
+public class Video extends BaseBean {
     private String videoId;
     private String name;
     private Double size;

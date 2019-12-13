@@ -1,15 +1,14 @@
 package com.winterchen.dao;
 
-
-import com.winterchen.model.Lable;
+import com.winterchen.commons.Dao;
 import com.winterchen.model.LableExt;
 
 import java.util.List;
 
-public interface LableDao {
+public interface LableDao extends Dao<LableExt, String> {
 
-    List<LableExt> getLables();
-
-    void addLable(LableExt lableExt);
+//    List<LableExt> getLables(LableExt lableExt);
+//
+//    void addLable(LableExt lableExt);
 
 }

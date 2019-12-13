@@ -1,8 +1,10 @@
 package com.winterchen.model;
 
+import com.winterchen.commons.BaseBean;
+
 import java.util.Date;
 
-public class Lable {
+public class Lable extends BaseBean {
 
     private String lableId;
     private String lableName;

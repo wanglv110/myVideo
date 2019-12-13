@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.winterchen.dao.VideoDao" >
+<mapper namespace="myVideo.video" >
 
 
   <resultMap id="BaseResultMap" type="com.winterchen.model.VideoExt">
@@ -20,7 +20,7 @@
   </resultMap>
 
 
-  <select id="getVideos" resultMap="BaseResultMap">
+  <select id="getVideos" parameterType="com.winterchen.model.VideoExt" resultMap="BaseResultMap">
       SELECT *
       FROM
         video
@@ -32,13 +32,19 @@
         v.name,
         v.size,
         v.designation,
-        v.path
+        v.path,
+        p.performer_name,
+        l.lable_name
       FROM
         performer_relation pr
         LEFT JOIN performer p
           ON pr.performer_id = p.performer_id
         LEFT JOIN video v
           ON pr.video_id = v.video_id
+        LEFT JOIN lable_relation lr
+          ON lr.video_id = v.video_id
+        LEFT JOIN lable l
+          ON l.lable_id = lr.lable_id
       WHERE p.performer_name LIKE
       CONCAT("%", #{performerName} , "%")
   </select>
@@ -49,13 +55,20 @@
       v.name,
       v.size,
       v.designation,
-      v.path
+      v.path,
+      p.performer_name,
+      l.lable_name
     FROM
       lable_relation lr
       LEFT JOIN lable l
         ON lr.lable_id = l.lable_id
       LEFT JOIN video v
         ON lr.video_id = v.video_id
+      LEFT JOIN performer_relation pr
+        ON pr.video_id = v.video_id
+      LEFT JOIN performer p
+        ON pr.performer_id = p.performer_id
+
     WHERE l.lable_name LIKE
     CONCAT("%", #{lableName} , "%")
   </select>

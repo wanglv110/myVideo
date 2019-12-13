@@ -10,7 +10,7 @@ public interface VideoService {
      * 查询所有视频
      * @return
      */
-    List<VideoExt> getVideos();
+    List<VideoExt> getVideos(VideoExt videoExt);
 
     /**
      * 根据演员查询视频

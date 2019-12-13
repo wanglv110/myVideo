@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>videoList</title>
+    <script src="/templates/js/jquery-3.4.1.js"></script>
+</head>
+<script type="text/javascript">
+    $(function () {
+        $("#f").hide();
+        $("#select").click(function () {
+
+
+            //发送ajax查询所有图书
+            $.ajax({
+                url: "http://localhost:8080/jkplatform/v1/qkmark/ranking/rankingList?appid=atoxseeqdwdssxsrwwrueswtqrwfbsbs&os=android&v=5.2.0.1&terminal=1&udid=55b45254011fc0dbeb1f2fc7b96ce409&token=dd805db2ea568c07d3845c4596ccc9d8c3ab5e16a3f23eddab972216f49444179c9b75617f3a144c0088cd04e2688249&page=1&step=12&tabFlag=1&keyword=",
+                dataType: "json",
+                success: function (data) {
+                    var str = '<table align="center" border="1">' +
+                        '    <thead>' +
+                        '    <tr>' +
+                        '        <th>图书编号</th>' +
+                        '        <th>图书名称</th>' +
+                        '        <th>图书价格</th>' +
+                        '        <th>操作</th>' +
+                        '    </tr>' +
+                        '    </thead>' +
+                        '    <tbody>';
+                    var msg = data.results.list
+
+                    alert(msg)
+                    console.log(msg);
+                    <!-- qkMarkName -->
+                    $.each(data, function (index, msg) {
+
+                        console.log(msg);
+                        str += '<tr>' +
+                            '<td>' + msg.attentionStatus + '</td>' +
+                            '<td>' + msg[1] + '</td>' +
+                            '<td>' + msg.bookPrice + '</td>' +
+                            '<td>' + '<a href="javascript:void(0)" οnclick="getBookDetail(' + msg.id + ')">修改</a>' + '||' + '<a href="javascript:void(0)" οnclick="deleteBook(' + msg.id + ')">删除</a>' + '</td>' +
+                            '</tr>';
+                    })
+                    str += '    </tbody>' +
+                        '</table>';
+                    $("#detail").html(str);
+
+
+
+                }
+
+            });
+
+
+
+
+
+
+
+        });
+
+    });
+            </script>
+    <body>
+    // <p align="center"><a href="javascript:void(0)" id="select">查询所有图书</a>&nbsp;||&nbsp;<a href="javascript:void(0)"
+    // id="insert">添加图书</a></p>
+    // <div id="detail">
+    //
+    //     </div>
+    //
+    //     <hr/>
+    //     <form id="f">
+    //     bookName:<input type="text" name="bookName"/><br/>
+    //     bookPrice:<input type="text" name="bookPrice"/><br/>
+    //     <input type="button" id="add" value="insert"/>
+    //     </form>
+    //     <div id="dd"></div>
+
+
+
+</body>
+</html>
